@@ -1,31 +1,21 @@
-# Brute Force Web App (Flask)
+# BruteForce Flask Panel
 
-This is a web-based brute force testing tool with login protection.
+A web-based brute force control panel built with Flask, including login protection, live updates, iframe previews, and result display.
 
 ## Features
 - Admin login (username: `admin`, password: `kader11000`)
-- Upload username and password lists
-- Test login forms with brute force
-- Search for success keyword in the response
-- View detailed results
-- Download logs of all attempts
+- Start/Stop/Resume brute force attack
+- Display terminal-style output
+- View successful login guesses in a table
+- Live iframe view of the target site
+- Editable request panel
 
-## How to Run
+## Installation
 
-1. Install dependencies:
-
-pip install flask requests
-
-2. Run the app:
-
+```bash
+python3 -m venv venv
+source venv/bin/activate  # On Windows: venv\\Scripts\\activate
+pip install -r requirements.txt
 python app.py
-
-3. Open your browser:
-
-http://127.0.0.1:5000
-
-## Files
-
-- app.py: Main Flask application
-- templates/: HTML templates
-- logs.txt: Log of brute force attempts
+Then open http://127.0.0.1:5000
+in your browser 
