@@ -95,17 +95,22 @@ combos = list(product(wordlist, repeat=len(regions)))
 for combo in combos:
     fuzzed = raw_request
     for region, word in zip(regions, combo):
-        fuzzed = fuzzed.replace(f"{{{{{region}}}}}", word)
+        fuzzed = fuzzed.replace("{{" + region + "}}", word)
 
     try:
         request_lines = fuzzed.strip().split("\n")
-        method, path, _ = request_lines[0].split()
+        if len(request_lines[0].split()) < 2:
+            logs.append("Invalid request line")
+            continue
+        method, path, *_ = request_lines[0].split()
         headers = {}
         data = ""
+        in_headers = True
         for line in request_lines[1:]:
             if line.strip() == "":
+                in_headers = False
                 continue
-            if ':' in line:
+            if in_headers and ':' in line:
                 key, value = line.split(':', 1)
                 headers[key.strip()] = value.strip()
             else:
@@ -117,7 +122,6 @@ for combo in combos:
 
         if keyword in resp.text:
             logs.append(f"Match found with {combo}")
-
             os.makedirs("results", exist_ok=True)
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
             filename = f"success_{timestamp}.html"
